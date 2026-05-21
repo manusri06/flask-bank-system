@@ -18,9 +18,9 @@ def get_db():
         port=int(os.environ.get("DB_PORT", 3306)),
         ssl_ca=False,
         ssl_verify_cert=False,
-        ssl_verify_identity=False
+        ssl_verify_identity=False,
+        connection_timeout=30
     )
-
 
 @app.route('/', methods=['GET','POST'])
 def signup():
