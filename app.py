@@ -11,10 +11,14 @@ app.secret_key = os.environ.get("SECRET_KEY", "fallback-dev-key")
 
 def get_db():
     return mysql.connector.connect(
-        host=os.environ.get("DB_HOST"),
-        user=os.environ.get("DB_USER"),
-        password=os.environ.get("DB_PASSWORD"),
-        database=os.environ.get("DB_NAME")
+        host=os.environ.get("DB_HOST", ""),
+        user=os.environ.get("DB_USER", ""),
+        password=os.environ.get("DB_PASSWORD", ""),
+        database=os.environ.get("DB_NAME", ""),
+        port=int(os.environ.get("DB_PORT", 3306)),
+        ssl_ca=False,
+        ssl_verify_cert=False,
+        ssl_verify_identity=False
     )
 
 
