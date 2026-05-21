@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSS Pay - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* Matching your Signup Page split background */
+            background: linear-gradient(
+                135deg, 
+                #f0f2f5 50%, 
+                #d8a5ff 50%, 
+                #8ec5fc 100%
+            );
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .logo img {
+            width: 60%; 
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.1));
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            color: #1a1a1a;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* The Grid System */
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            width: 100%;
+        }
+
+        /* Card Styling with Glassmorphism */
+        .card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Visual Logic: Cards on the "Left" (White side) vs "Right" (Blue side) */
+        /* Since the grid wraps, we use nth-child to give them slightly different themes */
+        
+        /* Cards 1 & 3 (Usually left side) */
+        .card:nth-child(odd) {
+            border-left: 5px solid #8ec5fc;
+        }
+
+        /* Cards 2 & 4 (Usually right side) */
+        .card:nth-child(even) {
+            border-left: 5px solid #d8a5ff;
+            background: rgba(40, 81, 128, 0.1); /* Darker blur for the lighter side */
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(40, 81, 128, 0.4);
+            color: #fff;
+            box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        /* Styling for the icons inside the cards */
+        .card img {
+            width: 120px; /* Adjust size as needed */
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Optional: Makes the icon "pop" when you hover over the card */
+        .card:hover img {
+            transform: scale(1.1);
+             /* Turns icons white on hover to match text change */
+        }
+
+        .logout-btn{
+            position: fixed;
+            top: 20px;
+            right: 20px;
+
+            color: #ff7675;
+            text-decoration: none;
+            font-weight: 600;
+            background: rgba(255,255,255,0.6);
+            padding: 10px 18px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover{
+            background: rgba(77, 109, 161, 0.3);
+            color: #4a6cf7;
+        }
+
+     .footer{
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            color: #1a1a1a;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Style for the dynamic name */
+        .user-name {
+            color: #4a6cf7; /* Matches the blue theme */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .grid-menu {
+                grid-template-columns: 1fr; /* Stack vertically on small phones */
+            }
+            .card {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='MSS_logobg.png') }}" alt="MSS Pay Logo">
+        </div>
+
+        <h1>Welcome Back, <span class="user-name">{{ msg }}</span></h1>
+
+    <div class="grid-menu">
+        </div>
+
+        <div class="grid-menu">
+    <a href="/addbal" class="card">
+        <img src="{{ url_for('static', filename='deposite.png') }}" alt="Deposit">
+        <span>Deposit Funds</span>
+    </a>
+
+    <a href="/pay" class="card">
+        <img src="{{ url_for('static', filename='transfer.png') }}" alt="Transfer">
+        <span>Transfer Money</span>
+    </a>
+
+    <a href="/viewbal" class="card">
+        <img src="{{ url_for('static', filename='checkbal.png') }}" alt="Balance">
+        <span>Account Balance</span>
+    </a>
+
+    <a href="/history" class="card">
+        <img src="{{ url_for('static', filename='history.png') }}" alt="History">
+        <span>Transaction History</span>
+    </a>
+
+    <a href="/logout" class="logout-btn">Logout</a>
+
+</div>
+    </div>
+
+    <footer class="footer">
+    © 2026 <strong>MSS Pay</strong> • Secure Digital Payment Platform
+</footer>
+
+</body>
+
+
+
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSS Pay - Transaction History</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f2f5 50%, #d8a5ff 50%, #8ec5fc 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 240px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px 15px;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .sidebar img {
+            width: 100px;
+            margin-bottom: 40px;
+            align-self: center;
+        }
+
+        .nav-item {
+            color: rgba(40, 81, 128, 0.8); 
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-item:hover {
+            background: rgba(77, 109, 161, 0.3);
+            color: #4a6cf7;
+        }
+
+        .nav-item.active {
+            background: rgba(74, 108, 247, 0.2);
+            color: #4a6cf7;
+            border: 1px solid rgba(74, 108, 247, 0.3);
+        }
+
+        /* --- WORKSPACE --- */
+        .workspace {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .history-container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #2d3436;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* --- TABLE STYLING --- */
+        .table-wrapper {
+            overflow-x: auto; /* Makes table scrollable on small screens */
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(40, 81, 128, 0.6);
+            padding: 15px;
+            border-bottom: 2px solid rgba(74, 108, 247, 0.2);
+        }
+
+        td {
+            padding: 15px;
+            font-size: 0.9rem;
+            color: #2d3436;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-pill {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(74, 108, 247, 0.1);
+            color: #4a6cf7;
+        }
+
+        .back-btn {
+            margin-top: 25px;
+            text-decoration: none;
+            padding: 10px 24px;
+            background: rgba(74, 108, 247, 0.1);
+            color: #4a6cf7;
+            border-radius: 12px; 
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, #7567de, #a29bfe);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.2); }
+            .workspace { padding: 20px; }
+            .history-container { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <img src="{{ url_for('static', filename='MSS_logobg.png') }}" alt="Logo">
+        <a href="/dashboard" class="nav-item">Dashboard</a>
+        <a href="/addbal" class="nav-item">Deposit Money</a>
+        <a href="/pay" class="nav-item">Transfer</a>
+        <a href="/viewbal" class="nav-item">Check Balance</a>
+        <a href="/history" class="nav-item active">History</a>
+        <div style="margin-top: auto;">
+            <a href="/logout" class="nav-item" style="color: #ff7675; opacity: 0.8;">Logout</a>
+        </div>
+    </div>
+
+    <div class="workspace">
+        <div class="history-container">
+            <h2>Transaction History</h2>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Sender</th>
+                            <th>Receiver</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in hist %}
+                        <tr>
+                            <td style="font-family: monospace; opacity: 0.7;">#{{ i.transaction_id }}</td>
+                            <td>{{ i.from_acc }}</td>
+                            <td>{{ i.to_acc }}</td>
+                            <td style="font-weight: 700;">₹{{ i.amount }}</td>
+                            <td style="font-size: 0.8rem; opacity: 0.8;">{{ i.created_at }}</td>
+                            <td><span class="status-pill">{{ i.status }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="/dashboard" class="back-btn">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

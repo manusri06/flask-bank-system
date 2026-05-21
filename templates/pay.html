@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSS Pay - Send Funds</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f2f5 50%, #d8a5ff 50%, #8ec5fc 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden; 
+        }
+
+        /* --- TRANSPARENT SIDEBAR --- */
+        .sidebar {
+            width: 240px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 15px;
+            z-index: 10;
+        }
+
+        .sidebar img {
+            width: 100px;
+            margin-bottom: 40px;
+            align-self: center;
+        }
+
+        .nav-item {
+            color: rgba(40, 81, 128, 0.8); 
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-item:hover {
+            background: rgba(77, 109, 161, 0.3);
+            color: #4a6cf7;
+        }
+
+        .nav-item.active {
+            background: rgba(74, 108, 247, 0.2);
+            color: #4a6cf7;
+            border: 1px solid rgba(74, 108, 247, 0.3);
+        }
+
+        /* --- WORKSPACE --- */
+        .workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .transfer-flow {
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .input-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: rgba(40, 81, 128, 0.6);
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* Input Styling */
+        input[type="text"], input[type="number"] {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(111, 63, 139, 0.2);
+            width: 100%;
+            text-align: center;
+            outline: none;
+            color: rgba(26, 42, 64, 0.9);
+            padding: 15px;
+            transition: 0.3s;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] { font-size: 1.5rem; font-weight: 500; }
+        input[type="number"] { font-size: 3rem; font-weight: 700; }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+        input:focus {
+            border-bottom-color: #964bbe;
+            transform: scale(1.02);
+        }
+
+        /* Transparent Glass Button */
+        .confirm-btn {
+            margin-top: 20px;
+            padding: 15px 45px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #4a6cf7;
+            border: 1px solid rgba(74, 108, 247, 0.4);
+            border-radius: 30px; 
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.4s;
+            width: 100%;
+        }
+
+        .confirm-btn:hover {
+            background: linear-gradient(135deg, #7567de, #a29bfe);
+            color: #fff;
+            box-shadow: 0 10px 25px rgba(74, 108, 247, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Message Styles */
+        .error-msg {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ff7675;
+        }
+
+        .success-msg {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #814f8d;
+        }
+        
+        .success-msg a {
+            text-decoration: none;
+            color: #814f8d;
+            color: #814f8d;
+        }
+
+      .footer{
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow: auto; }
+            .sidebar { width: 100%; height: auto; padding: 15px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.2); }
+            input[type="number"] { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <img src="{{ url_for('static', filename='MSS_logobg.png') }}" alt="Logo">
+        
+        <a href="/dashboard" class="nav-item">Dashboard</a>
+        <a href="/addbal" class="nav-item">Deposit Money</a>
+        <a href="/pay" class="nav-item active">Transfer</a>
+        <a href="/viewbal" class="nav-item">Check Balance</a>
+        <a href="/history" class="nav-item">History</a>
+        
+        <div style="margin-top: auto;">
+            <a href="/logout" class="nav-item" style="color: #ff7675; opacity: 0.8;">Logout</a>
+        </div>
+    </div>
+
+    <div class="workspace">
+        <form method="POST" class="transfer-flow">
+            <span class="input-label">Recipient Username</span>
+            <input type="text" name="name" placeholder="Enter username" required autofocus>
+
+            <span class="input-label">Amount to Send</span>
+            <input type="number" name="money" placeholder="0" min="1" step="0.01" required>
+
+            <button type="submit" class="confirm-btn">Confirm Transfer</button>
+
+            {% if user_error or selfpay_error or money_error or bal_error %}
+                <p class="error-msg">
+                    {{ user_error }} {{ selfpay_error }} {{ money_error }} {{ bal_error }}
+                </p>
+            {% endif %}
+
+            {% if state %}
+                <p class="success-msg">
+                    <a href="/dashboard">{{ state }}</a>
+                </p>
+            {% endif %}
+        </form>
+    </div>
+
+     <footer class="footer">
+    © 2026 <strong>MSS Pay</strong> • Secure Digital Payment Platform
+</footer>
+
+</body>
+</html>

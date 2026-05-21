@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSS Pay - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* Flipped Background: Gradient is now on TOP, Grey is on BOTTOM */
+            background: linear-gradient(
+                315deg, 
+                #f0f2f5 50%, 
+                #d8a5ff 50%, 
+                #8ec5fc 100%
+            );
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            /* The Glassmorphism Effect */
+            background: rgba(40, 81, 128, 0.4); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            
+            padding: 40px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 450px; 
+            
+            /* Offset shadow for depth */
+            box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+        }
+
+        .logo img {
+            /* Large Logo */
+            width: 60%; 
+            max-width: 200px;
+            min-width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: clamp(1.2rem, 5vw, 1.5rem);
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-group {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .input-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #444;
+            margin-left: 2px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            border: 1px solid #8ec5fc;
+        }
+
+        button {
+            padding: 15px;
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: transparent;
+            color: #000;
+        }
+
+        .error {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .error a {
+            color: #ff4d4d;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup-link {
+            margin-top: 25px;
+            font-size: 0.9rem;
+        }
+
+        .signup-link a {
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* Responsive adjustment for small phones */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+                box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='MSS_logobg.png') }}" alt="MSS Pay Logo">
+        </div>
+
+        <h2>Welcome Back</h2>
+
+        <form method="POST">
+            <div class="input-group">
+                
+                <input type="email" name="email" placeholder="Enter your email address" required>
+            </div>
+
+            <div class="input-group">
+                
+                <input type="password" name="password" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit">Login</button>
+
+            {% if error %}
+            <p class="error"><a href="/">{{ error }}</a></p>
+            {% endif %}
+
+            {% if error2 %}
+            <p class="error"><a href="/login">{{ error2 }}</a></p>
+            {% endif %}
+
+            <div class="signup-link">
+                Don't have an account? <a href="/">Sign Up</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

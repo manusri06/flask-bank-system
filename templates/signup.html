@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSS Pay - Sign Up</title>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  body {
+    /* Updated background with background-size to ensure the split is perfect on all screens */
+    background: linear-gradient(
+        135deg, 
+        #f0f2f5 50%, 
+        #d8a5ff 50%, 
+        #8ec5fc 100%
+    );
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Prevents the box from touching screen edges on mobile */
+  }
+
+  .signup-container {
+    background: rgba(40, 81, 128, 0.4); 
+    backdrop-filter: blur(20px); 
+    -webkit-backdrop-filter: blur(20px);
+    
+    padding: 40px;
+    border-radius: 15px;
+    
+    /* RESPONSIVE WIDTH: 
+       Width is 90% of the screen on small devices, 
+       but never wider than 450px on large devices */
+    width: 100%;
+    max-width: 450px; 
+    
+    box-shadow: 15px 15px 0px rgba(0, 0, 0, 0.1); 
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    text-align: center;
+  }
+
+  .logo img {
+    /* Responsive Logo: Scale based on container width */
+    width: 60%; 
+    max-width: 200px;
+    min-width: 120px;
+    height: auto;
+    margin-bottom: 25px;
+  }
+
+  h2 {
+    font-size: clamp(1.2rem, 5vw, 1.5rem); /* Dynamically scales font size */
+    color: #1a1a1a;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  input {
+    width: 100%; /* Ensures input fills the box */
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    outline: none;
+  }
+
+  button {
+    padding: 15px;
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #000;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s ease;
+  }
+
+  button:hover {
+    background-color: transparent;
+    color: #000;
+  }
+
+  /* MEDIA QUERY for small mobile screens */
+  @media (max-width: 480px) {
+    .signup-container {
+      padding: 25px;
+      box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.1); /* Smaller shadow for smaller screen */
+    }
+    
+    .logo img {
+      margin-bottom: 15px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="signup-container">
+
+<div class="logo">
+<img src="{{ url_for('static', filename='MSS_logobg.png') }}" alt="MSS Pay Logo">
+</div>
+
+<h2>Create Your Account</h2>
+
+<form method="POST">
+
+<input type="text" name="name" placeholder="Enter your username" required>
+
+<input type="email" name="email" placeholder="Enter your email address" required>
+
+<input type="password" name="password" placeholder="Create a password" required>
+
+<button type="submit">Create Account</button>
+
+{% if error %}
+<p class="error"><a href="/login">{{error}}</a></p>
+{% endif %}
+
+{% if n_error %}
+<p class="error">{{n_error}}</p>
+{% endif %}
+
+<div class="login-link">
+Already have an account? <a href="/login">Login</a>
+</div>
+
+</form>
+
+</div>
+
+</body>
+</html>
