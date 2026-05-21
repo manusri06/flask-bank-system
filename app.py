@@ -16,9 +16,6 @@ def get_db():
         password=os.environ.get("DB_PASSWORD", ""),
         database=os.environ.get("DB_NAME", ""),
         port=int(os.environ.get("DB_PORT", 3306)),
-        ssl_ca=False,
-        ssl_verify_cert=False,
-        ssl_verify_identity=False,
         connection_timeout=30
     )
 
